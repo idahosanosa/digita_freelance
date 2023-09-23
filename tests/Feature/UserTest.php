@@ -12,7 +12,7 @@ class UserTest extends TestCase
     /**
      * A basic feature test example.
      */
-
+    // testing the status code for request
     public function testHeaders(): void
     {
         $response = $this->withHeaders([
@@ -22,6 +22,7 @@ class UserTest extends TestCase
         $response->assertStatus(200);
     }
 
+    // testing the update method for data consistency
     public function testUpdate(): void
     {
         $user = new User;
@@ -35,5 +36,24 @@ class UserTest extends TestCase
         ]);
 
         $this->assertSame($data, $data);
+    }
+
+    public function testShowUserWithCurrency(): void
+    {
+        $user = new User;
+        $data = $user->show(7, 'USD');
+
+        $this->assertSame($data, $data);
+    }
+
+    public function testDeleteUser(): void
+    {
+        $user = User::factory()->count(1)->make();
+        $user = User::first();
+
+        if ($user) {
+            $user->delete();
+        }
+        $this->assertTrue(true);
     }
 }

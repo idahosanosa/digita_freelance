@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 
 class UserController extends Controller
@@ -51,6 +52,7 @@ class UserController extends Controller
 
     private function ConvertCurrency($fromCurrency, $toCurrency, $hourlyRate)
     {
+        //get the currency symbols from the env file
         $currencyArray = explode(',', env('CURRENCIES'));
         $toCurrency = strtoupper($toCurrency);
         if (!in_array($toCurrency, $currencyArray)) {

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Illuminate\Support\Testing\Fakes\Fake;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -16,15 +17,22 @@ class UserFactory extends Factory
      * @return array<string, mixed>
      */
     public function definition(): array
-    {
+    {   
+        //get the currency symbols from the env file
+        $currencyCode = explode(',', env('CURRENCIES'));;
+
         return [
             'name' => fake()->name(),
+            'job_title' => fake()->jobTitle(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'mobile_no' => fake()->phoneNumber(),
+            'hourly_rate' => fake()->randomDigitNotZero(),
+            'currency' => $currencyCode[array_rand($currencyCode, 1)],
         ];
     }
+
+
+
 
     /**
      * Indicate that the model's email address should be unverified.
