@@ -16,10 +16,7 @@ class UserController extends Controller
     //
     public function index()
     {
-        // return UserResource::collection(User::orderBy('hourly_rate', 'Desc')->get());
-        $user = User::factory()->count(1)->make();
-        $user = $user->first();
-        return $user;
+        return UserResource::collection(User::orderBy('hourly_rate', 'Desc')->get());
     } //end of index method
 
     public function store(StoreUserRequest $request)
