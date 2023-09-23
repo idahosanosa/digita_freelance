@@ -40,10 +40,12 @@ class UserTest extends TestCase
 
     public function testShowUserWithCurrency(): void
     {
-        $user = new User;
-        $data = $user->show(7, 'USD');
+        $user = User::first();
+        $response = $this->withHeaders([
+            'Content-Type' => 'application/json',
+        ])->get('/api/user/' . $user->id . '?currency=USD');
 
-        $this->assertSame($data, $data);
+        $response->assertStatus(200);
     }
 
     public function testDeleteUser(): void
