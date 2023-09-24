@@ -3,8 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -12,15 +10,31 @@ class UserTest extends TestCase
     /**
      * A basic feature test example.
      */
-    // testing the status code for request
-    public function testHeaders(): void
+    // test for the status code for index request
+    public function testIndexHeader(): void
     {
         $response = $this->withHeaders([
             'Content-Type' => 'application/json',
         ])->get('/api/user');
 
         $response->assertStatus(200);
-    }
+    } //end of testIndexHeader method
+
+    // test for store method
+    public function testStoreMethod(): void
+    {
+        $currencyCode = explode(',', env('CURRENCIES'));;
+        $data = [
+            'name' => fake()->name(),
+            'job_title' => fake()->jobTitle(),
+            'email' => fake()->unique()->safeEmail(),
+            'mobile_no' => fake()->phoneNumber(),
+            'hourly_rate' => fake()->randomDigitNotZero(),
+            'currency' => $currencyCode[array_rand($currencyCode, 1)],
+        ];
+        $this->post('/api/user', $data)
+            ->assertStatus(201);
+    } //end of testStoreMethod method
 
     // testing the update method for data consistency
     public function testUpdate(): void
@@ -36,8 +50,9 @@ class UserTest extends TestCase
         ]);
 
         $this->assertSame($data, $data);
-    }
+    } // end of testUpdate method
 
+    // test for checking a user rate based on a provided currency
     public function testShowUserWithCurrency(): void
     {
         $user = User::first();
@@ -46,8 +61,9 @@ class UserTest extends TestCase
         ])->get('/api/user/' . $user->id . '?currency=USD');
 
         $response->assertStatus(200);
-    }
+    } // end of testShowUserWithCurrency method
 
+    //test for delete method
     public function testDeleteUser(): void
     {
         $user = User::factory()->count(1)->make();
@@ -57,5 +73,5 @@ class UserTest extends TestCase
             $user->delete();
         }
         $this->assertTrue(true);
-    }
+    } // end of testDeleteUser method
 }

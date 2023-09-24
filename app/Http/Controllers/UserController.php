@@ -8,7 +8,6 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
 
 
 class UserController extends Controller
@@ -85,7 +84,7 @@ class UserController extends Controller
                 'converted_hourly_rate' => $response['rates'][$toCurrency] * $hourlyRate,
             ];
         }
-    }
+    } //end of convertWithApi method
 
 
     private function convertWithLocalDriver($fromCurrency, $toCurrency, $hourlyRate): array
@@ -95,5 +94,5 @@ class UserController extends Controller
             'to' => $toCurrency,
             'converted_hourly_rate' => $hourlyRate * env($fromCurrency . '_TO_' . $toCurrency . '_RATE'),
         ];
-    }
+    } // end of convertWithLocalDriver method
 }
